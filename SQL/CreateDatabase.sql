@@ -8,19 +8,24 @@ CREATE TABLE rspv.Invitee (
     LastName VARCHAR(50) NOT NULL, 
     Email VARCHAR(255), 
     Address VARCHAR(255),
+    ParentId UUID,
     CreatedDateTime TIMESTAMP NOT NULL,
-    PRIMARY KEY (Id)
+    PRIMARY KEY (Id),
+    CONSTRAINT FK_ParentInvitee
+        FOREIGN KEY (ParentId)
+            REFERENCES Invitee(Id)
 );
 
 CREATE TABLE rspv.Response {
     Id UUID NOT NULL, 
-    InviteeId 
+    InviteeId UUID NOT NULL,
     Attending BIT NOT NULL, 
     Message VARCHAR(1000),
     PRIMARY KEY (Id),
     CONSTRAINT FK_Invitee
         FOREIGN KEY (InviteeId)
-            REFERENCES Invitee(Id)
+            REFERENCES Invitee(Id),
+    
 };
 
 CREATE TABLE rspv.MealType {
@@ -50,7 +55,6 @@ CREATE TABLE rspv.MealChoice {
     MealOptionId UUID,
     PRIMARY KEY (Id)
 };
-
 
 CREATE USER rsvp_readwrite WITH ENCRYPTED PASSWORD 'changeme';
 
