@@ -1,6 +1,8 @@
 CREATE DATABASE rsvp;
 
-USE rsvp;
+\c rsvp;
+
+CREATE SCHEMA rsvp;
 
 CREATE TABLE rspv.Invitee (
     Id UUID NOT NULL,
@@ -16,7 +18,7 @@ CREATE TABLE rspv.Invitee (
             REFERENCES Invitee(Id)
 );
 
-CREATE TABLE rspv.Response {
+CREATE TABLE rspv.Response (
     Id UUID NOT NULL, 
     InviteeId UUID NOT NULL,
     Attending BIT NOT NULL, 
@@ -26,13 +28,13 @@ CREATE TABLE rspv.Response {
         FOREIGN KEY (InviteeId)
             REFERENCES Invitee(Id),
     
-};
+);
 
-CREATE TABLE rspv.MealType {
+CREATE TABLE rspv.MealType (
     Id INT NOT NULL,
     Description VARCHAR(255) NOT NULL,
     PRIMARY KEY (Id)
-};
+);
 
 INSERT INTO rspv.MealType 
     (Id, Description) VALUES
@@ -40,21 +42,21 @@ INSERT INTO rspv.MealType
     (2, 'Main'), 
     (3, 'Desert');
 
-CREATE TABLE rspv.MealOption {
+CREATE TABLE rspv.MealOption (
     Id UUID NOT NULL, 
     MealTypeId INT NOT NULL,
     PRIMARY KEY (Id),
     CONSTRAINT 
         FOREIGN KEY (MealTypeId) 
             REFERENCES MealType(Id)
-};
+);
 
-CREATE TABLE rspv.MealChoice {
+CREATE TABLE rspv.MealChoice (
     Id UUID,
     InviteeId UUID,
     MealOptionId UUID,
     PRIMARY KEY (Id)
-};
+);
 
 CREATE USER rsvp_readwrite WITH ENCRYPTED PASSWORD 'changeme';
 
